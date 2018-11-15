@@ -1,0 +1,12 @@
+weinberg/corbett/term/project/part2/app/FindAllBooksDemo.class
+weinberg/corbett/term/project/part2/domain/Category.class
+weinberg/corbett/term/project/part2/app/InsertBookDemo.class
+weinberg/corbett/term/project/part2/dao/PublishingDaoImpl.class
+weinberg/corbett/term/project/part2/app/DeleteBookDemo.class
+weinberg/corbett/term/project/part2/dao/PublishingDao.class
+weinberg/corbett/term/project/part2/config/AppConfig.class
+weinberg/corbett/term/project/part2/app/UpdateBookDemo.class
+weinberg/corbett/term/project/part2/domain/Author.class
+weinberg/corbett/term/project/part2/app/MySQLErrorCodesTranslator.class
+weinberg/corbett/term/project/part2/domain/AbstractEntity.class
+weinberg/corbett/term/project/part2/domain/Book.class
