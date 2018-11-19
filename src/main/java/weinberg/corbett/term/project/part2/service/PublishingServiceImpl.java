@@ -2,81 +2,58 @@ package weinberg.corbett.term.project.part2.service;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
+
+import weinberg.corbett.term.project.part2.app.FindBookWithAuthorsAndCategoriesByBookId;
+import weinberg.corbett.term.project.part2.entities.Author;
 import weinberg.corbett.term.project.part2.entities.Book;
+import weinberg.corbett.term.project.part2.repos.BookRepository;
 
 /*
-	•	- Implement task Find All Books using @NamedQuery.
-	•	Implement task Find All Books With Authors And Categories using @NamedQuery.
-	•	Implement task Find Book with Authors And Category By Book Id using JPA 2 Criteria API.
-	•	Create a new book with an author(s). Add it to a selected category. Save the book with an author(s) in your database using JPA 2, or JPA 2 Criteria API.
-	•	Delete the newly created book and the author(s) from your database using JPA 2, or JPA 2 Criteria API.
-	•	- Find all books for one author id who has more than one book in your database using @NamedQuery.
-	•	- Implement task Find All Books By Native Query using Native Query.
+	•	Find a book with author(s) and category by the book Id
+	•	Find all books without details
+	•	Create a new book with a new author(s) not persisted yet in your database. The book should belong to one of the category already persisted in your database.  Save the book and the author(s) in the database.
+	•	Delete the added book and the author(s) from the database.
 */
 
-@SuppressWarnings("unchecked")
 @Transactional
 @Repository("publishingDao")
 public class PublishingServiceImpl implements PublishingService {
-	final static String ALL_BOOKS_NATIVE_QUERY =
-	        "select id, category_id, isbn, title, price, version from book";
-		
-	@PersistenceContext
-    private EntityManager em;
+	private static Logger logger = LoggerFactory.getLogger(PublishingServiceImpl.class);
+	
+	@Autowired
+    private BookRepository bookRepo;
+	
+	@Transactional(readOnly = true)
+	@Override
+	public List<Book> findAllBooks(){
+		return Lists.newArrayList(bookRepo.findAll());
+	}
+	
+	@Transactional(readOnly = true)
+	@Override
+	public void findAllBooksWithAuthorsAndCategoriesById(Long id){
+		Book book = bookRepo.findBookById(id);
+		logger.info(book.toString());
+		logger.info(book.getCategory().toString());
+		for(Author author : book.getAuthors()) {
+			logger.info(author.toString());
+		}
+	}
 
-	@Transactional(readOnly = true)
 	@Override
-	public List<Book> findAllBooksByNativeQuery(){
-		return em.createNativeQuery(ALL_BOOKS_NATIVE_QUERY, "bookResult").getResultList();
+	public void save(Book book) {
+		bookRepo.save(book);
 	}
-	
-	@Transactional(readOnly = true)
-	public List<Book> findAllBooksWithoutAuthorsAndCategories() {
-		return em.createNamedQuery(Book.FIND_ALL_BOOKS_WITHOUT_AUTHORS_CATEGORIES, Book.class).getResultList();
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Book> findAllBooksWithAuthorsAndCategories() {
-		return em.createNamedQuery(Book.FIND_ALL_BOOKS_WITH_AUTHORS_CATEGORIES, Book.class).getResultList();
-	}
-	
-	@Transactional(readOnly = true)
-	public Book findBookWithAuthorsAndCategoriesByBookId(long bookId) {
-		return null;// (Book)sessionFactory.getCurrentSession().
-				//getNamedQuery("Book.findAllBooksWithAuthorsAndCategoriesByBookId").
-				//setParameter("id", bookId).getSingleResult();
-	}
-	
-	@Transactional(readOnly = true)
-	public List<Book> findAllBooksWithAuthorAndCategoryByAuthorId(long authorId) {
-		TypedQuery<Book> query = em.createNamedQuery(Book.FIND_ALL_BOOKS_WITH_AUTHORS_CATEGORIES_BY_AUTHORID, 
-        		Book.class);
-        query.setParameter("id", authorId);
-        return query.getResultList();
-	}
-	
-	// Homework said insert, but I decided to allow both inserts and updates.
+
 	@Override
-	public Book save(Book book) {
-		return null;//sessionFactory.getCurrentSession().saveOrUpdate(book);
-		//return book;
+	public void delete(long id) {
+		bookRepo.deleteById(id);
 	}
-		
-	@Override
-	public void deleteBookAndAuthor(Book book) {
-		//sessionFactory.getCurrentSession().delete(book);
-	}
-	
-	//Inject the SessionFactory
-	//@Resource(name = "sessionFactory")
-	//public void setSessionFactory(SessionFactory sessionFactory) {
-		//this.sessionFactory = sessionFactory;
-	//}
 }

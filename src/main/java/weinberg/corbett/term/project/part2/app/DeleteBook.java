@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import weinberg.corbett.term.project.part2.entities.Author;
 import weinberg.corbett.term.project.part2.entities.Book;
 import weinberg.corbett.term.project.part2.service.PublishingService;
 
@@ -19,33 +18,23 @@ public class DeleteBook {
     	PublishingService publishingDao = ctx.getBean(PublishingService.class);
     	
     	logger.info("--------------- Existing Books with Authors and Categories: ------------------------------------- \\n");
-    	for(Book book : publishingDao.findAllBooksWithAuthorsAndCategories()) {
+    	for(Book book : publishingDao.findAllBooks()) {
 			logger.info(book.toString());
-			logger.info(book.getCategory().toString());
-			for(Author author : book.getAuthors()) {
-				logger.info(author.toString());
-			}
 			logger.info("--------------------------------------------------------------------------------------------------------");
         }
     	
     	logger.info("");
 		logger.info("--------------- Deleting Book and Author START: ------------------------------------- \n");
 				
-		Book deleteBook = publishingDao.findBookWithAuthorsAndCategoriesByBookId(8l);
-		
-		publishingDao.deleteBookAndAuthor(deleteBook);
+		publishingDao.delete(8l);
 		
 		logger.info("Deleted book!");
 		
         logger.info("--------------- Deleting Book and Author END: ------------------------------------- ");
 
         logger.info("--------------- Books with Authors and Categories After Deleting: ------------------------------------- \\n");
-    	for(Book book : publishingDao.findAllBooksWithAuthorsAndCategories()) {
+        for(Book book : publishingDao.findAllBooks()) {
 			logger.info(book.toString());
-			logger.info(book.getCategory().toString());
-			for(Author author : book.getAuthors()) {
-				logger.info(author.toString());
-			}
 			logger.info("--------------------------------------------------------------------------------------------------------");
         }
     	

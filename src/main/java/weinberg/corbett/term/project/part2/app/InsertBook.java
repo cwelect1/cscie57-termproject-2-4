@@ -20,27 +20,22 @@ public class InsertBook {
         ctx.load("classpath:spring/app-context-annotation.xml");
         ctx.refresh();
 
-    	PublishingService publishingDao = ctx.getBean(PublishingService.class);
+        PublishingService publishingDao = ctx.getBean(PublishingService.class);
     	
-    	logger.info("--------------- Existing Books with Authors and Categories: ------------------------------------- \\n");
-    	for(Book book : publishingDao.findAllBooksWithAuthorsAndCategories()) {
+        logger.info("--------------- Existing Books with Authors and Categories: ------------------------------------- \\n");
+    	for(Book book : publishingDao.findAllBooks()) {
 			logger.info(book.toString());
-			logger.info(book.getCategory().toString());
-			for(Author author : book.getAuthors()) {
-				logger.info(author.toString());
-			}
 			logger.info("--------------------------------------------------------------------------------------------------------");
         }
     	
     	logger.info("");
-		logger.info("--------------- Inserting New Book and Author START: ------------------------------------- \n");
+		logger.info("--------------- Listing \"insert new book\" START: ------------------------------------- \n");
 		
 		Category category = new Category();
 		category.setId(1L);
 		category.setName("Finance");
 
 		Book newBook = new Book();
-			 //newBook.setCategoryId(2l);
 			 newBook.setCategory(category);
 			 newBook.setTitle("Title");
 			 newBook.setIsbn(1234567890l);
@@ -55,27 +50,18 @@ public class InsertBook {
 		authors.add(newAuthor);
 		
 		newBook.addAuthor(authors);
+		
+		publishingDao.save(newBook);;
+		
+        logger.info("--------------- Listing \"insert new book\" END: -------------------------------------\n ");
 
-		publishingDao.save(newBook);
-		
-		logger.info("Adding new Book and Author and associating with existing category: \n\t\t\t\t\t\t\t\t\t" 
-					+ newBook.toString() + "\n\t\t\t\t\t\t\t\t\t"
-					+ newAuthor.toString() + "\n\t\t\t\t\t\t\t\t\t"
-					+ category.toString() + "\n");
-		
-		
-        logger.info("--------------- Inserting New Book and Author END: ------------------------------------- ");
-
-        logger.info("--------------- Books with Authors and Categories After Inserting New Book/Author: ------------------------------------- \\n");
-    	for(Book book : publishingDao.findAllBooksWithAuthorsAndCategories()) {
+    	
+        logger.info("--------------- After Inserting - Books with Authors and Categories: ------------------------------------- \n");
+    	for(Book book : publishingDao.findAllBooks()) {
 			logger.info(book.toString());
-			logger.info(book.getCategory().toString());
-			for(Author author : book.getAuthors()) {
-				logger.info(author.toString());
-			}
 			logger.info("--------------------------------------------------------------------------------------------------------");
         }
-    	
+
         ctx.close();
     }
 }

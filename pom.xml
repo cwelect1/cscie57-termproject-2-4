@@ -15,6 +15,8 @@
 	<commons.dbcp2.version>2.2.0</commons.dbcp2.version>
 	<hibernate.entitymanager.version>5.2.12.Final</hibernate.entitymanager.version>
 	<spring.orm.version>5.0.2.RELEASE</spring.orm.version>
+	<spring.data.jpa.version>2.0.2.RELEASE</spring.data.jpa.version>
+	<google.guava.version>19.0</google.guava.version>
   </properties>
   <dependencies>
       <dependency>
@@ -57,6 +59,16 @@
     	<artifactId>spring-orm</artifactId>
     	<version>${spring.orm.version}</version>
 	  </dependency>
+      <dependency>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+          <version>${google.guava.version}</version>
+      </dependency>
+	  <dependency>
+          <groupId>org.springframework.data</groupId>
+          <artifactId>spring-data-jpa</artifactId>
+          <version>${spring.data.jpa.version}</version>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -74,9 +86,9 @@
 		<artifactId>maven-shade-plugin</artifactId>
 		<version>3.1.0</version>
 		<executions>
-			<execution>
+			  <execution>
 				<phase>package</phase>
-				<id>spring-jdbc-datasources</id>
+				<id>Find-Book-With-Authors-And-Categories-By-BookId</id>
 				<goals>
 					<goal>shade</goal>
 				</goals>
@@ -90,10 +102,76 @@
 						</transformer>
 						<transformer
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>weinberg.corbett.term.project.part2.app.JdbcBookCategoryDaoDemo</mainClass>
+							<mainClass>weinberg.corbett.term.project.part2.app.FindBookWithAuthorsAndCategoriesByBookId</mainClass>
 						</transformer>
 					</transformers>
-					<finalName>spring-jdbc-datasources</finalName>
+					<finalName>Find-Book-With-Authors-And-Categories-By-BookId</finalName>
+				</configuration>
+			  </execution>
+			  <execution>
+				<phase>package</phase>
+				<id>find-books-without-author-and-categories</id>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+				<configuration>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.handlers</resource>
+						</transformer>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.schemas</resource>
+						</transformer>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>weinberg.corbett.term.project.part2.app.FindAllBooksWithoutAuthorsAndCategories</mainClass>
+						</transformer>
+					</transformers>
+					<finalName>find-books-without-author-and-categories</finalName>
+				</configuration>
+			  </execution>
+			  <execution>
+				<phase>package</phase>
+				<id>insert</id>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+				<configuration>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.handlers</resource>
+						</transformer>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.schemas</resource>
+						</transformer>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>weinberg.corbett.term.project.part2.app.InsertBook</mainClass>
+						</transformer>
+					</transformers>
+					<finalName>insert-book</finalName>
+				</configuration>
+			  </execution>
+			  <execution>
+				<phase>package</phase>
+				<id>delete</id>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+				<configuration>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.handlers</resource>
+						</transformer>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.schemas</resource>
+						</transformer>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>weinberg.corbett.term.project.part2.app.DeleteBook</mainClass>
+						</transformer>
+					</transformers>
+					<finalName>delete-book</finalName>
 				</configuration>
 			  </execution>
 			</executions>

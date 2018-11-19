@@ -4,21 +4,24 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
     xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="http://www.springframework.org/schema/jdbc
-        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-        http://www.springframework.org/schema/beans 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx    
-        http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
         destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url"
-            value="jdbc:mysql://127.0.0.1:3306/BOOKS23DB" />
+            value="jdbc:mysql://127.0.0.1:3306/BOOKS24DB" />
         <property name="username" value="prospring5" />
         <property name="password" value="prospring5" />
     </bean>
@@ -46,5 +49,10 @@
         </property>
     </bean>
 
+	<context:annotation-config/>
     <context:component-scan base-package="weinberg.corbett.term.project.part2" />
+    
+    <jpa:repositories base-package="weinberg.corbett.term.project.part2"
+                      entity-manager-factory-ref="emf"
+                      transaction-manager-ref="transactionManager"/>
 </beans>
